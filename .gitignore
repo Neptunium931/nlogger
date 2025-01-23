@@ -1,0 +1,27 @@
+# autotools
+*.log
+*.m4
+*.in
+configure
+configure~
+*.status
+*.cache
+build-aux
+Makefile
+*.o
+.deps
+.dirstamp
+stamp-h1
+config.h
+config.h.in~
+*.tar.gz
+tags
+*.trs
+*.vim
+
+build
+compile_commands.json
+
+lib
+
+vault.h
