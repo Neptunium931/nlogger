@@ -9,7 +9,7 @@ AM_MAKEFLAGS = --no-print-directory
 
 AM_CXXFLAGS =\
 						 -include $(top_builddir)/config.h \
-						 -I${top_srcdir}/src \
+						 -I${top_srcdir}/include \
 						 $(WARN_CXXFLAGS)
 
 AM_LDFLAGS = $(WARN_LDFLAGS)
