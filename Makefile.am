@@ -18,4 +18,4 @@ AM_LDFLAGS = $(WARN_LDFLAGS)
 loggerTest_SOURCES =\
 										./src/nlogger.hpp \
 										./test/loggerTest.cpp
-loggerTest_LDADD = $(CRITERION_LIBS) $(Modtorio_LDADD)
+loggerTest_LDADD = $(CRITERION_LIBS)
