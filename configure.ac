@@ -7,7 +7,7 @@ AC_INIT([nlogger],
 	[nlogger],
 	[https://github.com/Neptunium931/nlogger])
 
-AC_CONFIG_SRCDIR([src/nlogger.hpp])
+AC_CONFIG_SRCDIR([include/nlogger.hpp])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([
 		  foreign
