@@ -2,15 +2,15 @@
 
 set -e
 
-srcdir=`dirname "$0"`
+srcdir=$(dirname "$0")
 test -z "$srcdir" && srcdir=.
 
-ORIGDIR=`pwd`
+ORIGDIR=$(pwd)
 cd "$srcdir"
 
 autoreconf --force --verbose --install
 cd "$ORIGDIR"
 
 if test -z "$NOCONFIGURE"; then
-    "$srcdir"/configure "$@"
+	"$srcdir"/configure "$@"
 fi

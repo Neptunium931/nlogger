@@ -52,15 +52,11 @@ Test(logger, textInFile)
   auto fileName = std::filesystem::temp_directory_path() / "test1.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
-
   auto log = std::string("testLog");
   logger.debug(log);
   file.close();
-
   auto line = getFileContent(fileName);
-
   cr_assert_eq(line, log);
-
   std::filesystem::remove(fileName);
 }
 
@@ -69,14 +65,10 @@ Test(logger, LevelInfo)
   auto fileName = std::filesystem::temp_directory_path() / "test2.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
-
   logger.setLevel(Neptunium931::LogLevel::INFO);
   logAllLevel(logger);
   file.close();
-
   auto content = getFileContent(fileName);
-  std::cout << content;
-
   cr_assert_eq(content, "infowarnerrorpanic");
   std::filesystem::remove(fileName);
 }
@@ -86,14 +78,10 @@ Test(logger, LevelWarn)
   auto fileName = std::filesystem::temp_directory_path() / "test3.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
-
   logger.setLevel(Neptunium931::LogLevel::WARN);
   logAllLevel(logger);
   file.close();
-
   auto content = getFileContent(fileName);
-  std::cout << content;
-
   cr_assert_eq(content, "warnerrorpanic");
   std::filesystem::remove(fileName);
 }
@@ -103,14 +91,10 @@ Test(logger, LevelError)
   auto fileName = std::filesystem::temp_directory_path() / "test4.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
-
   logger.setLevel(Neptunium931::LogLevel::ERROR);
   logAllLevel(logger);
   file.close();
-
   auto content = getFileContent(fileName);
-  std::cout << content;
-
   cr_assert_eq(content, "errorpanic");
   std::filesystem::remove(fileName);
 }
@@ -120,14 +104,10 @@ Test(logger, LevelPanic)
   auto fileName = std::filesystem::temp_directory_path() / "test5.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
-
   logger.setLevel(Neptunium931::LogLevel::PANIC);
   logAllLevel(logger);
   file.close();
-
   auto content = getFileContent(fileName);
-  std::cout << content;
-
   cr_assert_eq(content, "panic");
   std::filesystem::remove(fileName);
 }
