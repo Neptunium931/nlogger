@@ -125,13 +125,6 @@ Nlogger::levelToString(LogLevel logLevel) -> std::string
   throw std::runtime_error("Unknown log level");
 };
 #pragma GCC diagnostic pop
-// auto
-// Nlogger::formatLog(std::string message, LogLevel logLevel) -> std::string
-// {
-//   std::string levelstring = leveltostring(loglevel);
-//   return std::vformat(this->logformat,
-//                       std::make_format_args(levelstring, message));
-// }
 // NOLINTEND(misc-definitions-in-headers)
 };
 #endif // !NLOGGER_HPP
