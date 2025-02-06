@@ -2,7 +2,10 @@
 // See end of file for extended copyright information.
 #ifndef NLOGGER_HPP
 #define NLOGGER_HPP
+#include <format>
+#include <functional>
 #include <iostream>
+#include <string>
 
 namespace Neptunium931
 {
@@ -33,6 +36,16 @@ private:
   // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
   std::ostream &oStream;
   LogLevel level = LogLevel::DEBUG;
+
+  static auto levelToString(LogLevel logLevel) -> std::string;
+
+  // std::function<std::string(const std::string &, LogLevel)> formatLog =
+  std::function<std::string(std::string, LogLevel)> formatLog =
+    [](std::string message, LogLevel logLevel)
+  {
+    auto levelstring = levelToString(logLevel);
+    return std::vformat("[{}]{}", std::make_format_args(levelstring, message));
+  };
 };
 
 // NOLINTBEGIN(misc-definitions-in-headers)
@@ -55,7 +68,7 @@ Nlogger::debug(const std::string &message) -> void
   {
     return;
   }
-  oStream << message << "\n";
+  oStream << this->formatLog(message, LogLevel::DEBUG) << "\n";
 }
 
 auto
@@ -65,7 +78,7 @@ Nlogger::info(const std::string &message) -> void
   {
     return;
   }
-  oStream << message << "\n";
+  oStream << this->formatLog(message, LogLevel::INFO) << "\n";
 }
 auto
 Nlogger::warn(const std::string &message) -> void
@@ -74,7 +87,7 @@ Nlogger::warn(const std::string &message) -> void
   {
     return;
   }
-  oStream << message << "\n";
+  oStream << this->formatLog(message, LogLevel::WARN) << "\n";
 }
 auto
 Nlogger::error(const std::string &message) -> void
@@ -83,13 +96,42 @@ Nlogger::error(const std::string &message) -> void
   {
     return;
   }
-  oStream << message << "\n";
+  oStream << this->formatLog(message, LogLevel::ERROR) << "\n";
 }
 auto
 Nlogger::panic(const std::string &message) -> void
 {
-  oStream << message << "\n";
+  oStream << this->formatLog(message, LogLevel::PANIC) << "\n";
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wswitch-default"
+auto
+Nlogger::levelToString(LogLevel logLevel) -> std::string
+{
+  switch (logLevel)
+  {
+    case LogLevel::DEBUG:
+      return "DEBUG";
+    case LogLevel::INFO:
+      return "INFO";
+    case LogLevel::WARN:
+      return "WARN";
+    case LogLevel::ERROR:
+      return "ERROR";
+    case LogLevel::PANIC:
+      return "PANIC";
+  }
+  throw std::runtime_error("Unknown log level");
+};
+#pragma GCC diagnostic pop
+// auto
+// Nlogger::formatLog(std::string message, LogLevel logLevel) -> std::string
+// {
+//   std::string levelstring = leveltostring(loglevel);
+//   return std::vformat(this->logformat,
+//                       std::make_format_args(levelstring, message));
+// }
 // NOLINTEND(misc-definitions-in-headers)
 };
 #endif // !NLOGGER_HPP

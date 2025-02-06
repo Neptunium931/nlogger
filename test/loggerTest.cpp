@@ -56,7 +56,7 @@ Test(logger, textInFile)
   logger.debug(log);
   file.close();
   auto line = getFileContent(fileName);
-  cr_assert_eq(line, log);
+  cr_assert_eq(line, "[DEBUG]" + log);
   std::filesystem::remove(fileName);
 }
 
@@ -69,7 +69,7 @@ Test(logger, LevelInfo)
   logAllLevel(logger);
   file.close();
   auto content = getFileContent(fileName);
-  cr_assert_eq(content, "infowarnerrorpanic");
+  cr_assert_eq(content, "[INFO]info[WARN]warn[ERROR]error[PANIC]panic");
   std::filesystem::remove(fileName);
 }
 
@@ -82,7 +82,7 @@ Test(logger, LevelWarn)
   logAllLevel(logger);
   file.close();
   auto content = getFileContent(fileName);
-  cr_assert_eq(content, "warnerrorpanic");
+  cr_assert_eq(content, "[WARN]warn[ERROR]error[PANIC]panic");
   std::filesystem::remove(fileName);
 }
 
@@ -95,7 +95,7 @@ Test(logger, LevelError)
   logAllLevel(logger);
   file.close();
   auto content = getFileContent(fileName);
-  cr_assert_eq(content, "errorpanic");
+  cr_assert_eq(content, "[ERROR]error[PANIC]panic");
   std::filesystem::remove(fileName);
 }
 
@@ -108,7 +108,18 @@ Test(logger, LevelPanic)
   logAllLevel(logger);
   file.close();
   auto content = getFileContent(fileName);
-  cr_assert_eq(content, "panic");
+  cr_assert_eq(content, "[PANIC]panic");
+  std::filesystem::remove(fileName);
+}
+
+Test(logger, customLogFormat)
+{
+  auto fileName = std::filesystem::temp_directory_path() / "test6.log";
+  auto file = std::ofstream(fileName);
+  auto logger = Neptunium931::Nlogger(file);
+  file.close();
+
+  auto content = getFileContent(fileName);
   std::filesystem::remove(fileName);
 }
 // This file is part of nlogger.
