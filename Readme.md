@@ -25,6 +25,10 @@ int main() {
 ### SetLogLevel
 
 ```cpp
+#include <nlogger/nlogger.hpp>
+
+using namespace Neptunium931;
+
 int main() {
     auto logger = Nlogger;
     logger.setLogLevel(Nlogger::LogLevel::Error); // define log level
