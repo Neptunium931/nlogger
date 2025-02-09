@@ -117,9 +117,18 @@ Test(logger, customLogFormat)
   auto fileName = std::filesystem::temp_directory_path() / "test6.log";
   auto file = std::ofstream(fileName);
   auto logger = Neptunium931::Nlogger(file);
+  logger.setFormatLog(
+    [](std::string message, Neptunium931::LogLevel logLevel)
+    {
+      auto levelstring = levelToString(logLevel);
+      return std::vformat("{} {}",
+                          std::make_format_args(levelstring, message));
+    });
+  logAllLevel(logger);
   file.close();
-
   auto content = getFileContent(fileName);
+  std::cout << content << "\n";
+  cr_assert_eq(content, "DEBUG debugINFO infoWARN warnERROR errorPANIC panic");
   std::filesystem::remove(fileName);
 }
 // This file is part of nlogger.

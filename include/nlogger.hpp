@@ -18,6 +18,8 @@ enum LogLevel : std::uint8_t
   PANIC
 };
 
+static auto levelToString(LogLevel logLevel) -> std::string;
+
 class Nlogger
 {
 public:
@@ -25,6 +27,8 @@ public:
     : oStream(out) {};
   auto setOutStream(std::ostream &out) -> void;
   auto setLevel(LogLevel nemlevel) -> void;
+  auto setFormatLog(
+    std::function<std::string(std::string, LogLevel)> newFormat) -> void;
 
   auto debug(const std::string &message) -> void;
   auto info(const std::string &message) -> void;
@@ -36,8 +40,6 @@ private:
   // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
   std::ostream &oStream;
   LogLevel level = LogLevel::DEBUG;
-
-  static auto levelToString(LogLevel logLevel) -> std::string;
 
   // std::function<std::string(const std::string &, LogLevel)> formatLog =
   std::function<std::string(std::string, LogLevel)> formatLog =
@@ -60,6 +62,13 @@ Nlogger::setLevel(LogLevel nemlevel) -> void
 {
   this->level = nemlevel;
 };
+
+auto
+Nlogger::setFormatLog(
+  std::function<std::string(std::string, LogLevel)> newFormat) -> void
+{
+  this->formatLog = std::move(newFormat);
+}
 
 auto
 Nlogger::debug(const std::string &message) -> void
@@ -107,7 +116,7 @@ Nlogger::panic(const std::string &message) -> void
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch-default"
 auto
-Nlogger::levelToString(LogLevel logLevel) -> std::string
+levelToString(LogLevel logLevel) -> std::string
 {
   switch (logLevel)
   {
