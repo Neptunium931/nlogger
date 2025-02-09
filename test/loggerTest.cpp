@@ -1,6 +1,6 @@
 // Copyright (c) 2025, Tymothé BILLEREY <tymothe_billerey@fastmail.fr>
 // See end of file for extended copyright information.
-#include "nlogger.hpp"
+#include "nlogger/nlogger.hpp"
 #include <criterion/criterion.h>
 #include <filesystem>
 #include <fstream>
