@@ -50,6 +50,31 @@ private:
   };
 };
 
+class Snlogger
+{
+protected:
+  Snlogger() = default;
+
+private:
+  Nlogger logger;
+
+public:
+  auto operator=(const Snlogger &) = delete;
+
+  static auto
+  getLogger() -> Snlogger &
+  {
+    static Snlogger singleton;
+    return singleton;
+  }
+
+  auto
+  operator->() -> Nlogger *
+  {
+    return &logger;
+  }
+};
+
 // NOLINTBEGIN(misc-definitions-in-headers)
 auto
 Nlogger::setOutStream(std::ostream &out) -> void
