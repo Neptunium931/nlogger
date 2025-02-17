@@ -25,16 +25,68 @@ class Nlogger
 public:
   Nlogger(std::ostream &out = std::cout)
     : oStream(out) {};
-  auto setOutStream(std::ostream &out) -> void;
-  auto setLevel(LogLevel nemlevel) -> void;
-  auto setFormatLog(
-    std::function<std::string(std::string, LogLevel)> newFormat) -> void;
 
-  auto debug(const std::string &message) -> void;
-  auto info(const std::string &message) -> void;
-  auto warn(const std::string &message) -> void;
-  auto error(const std::string &message) -> void;
-  auto panic(const std::string &message) -> void;
+  auto
+  setOutStream(std::ostream &out) -> void
+  {
+    oStream.rdbuf(out.rdbuf());
+  }
+
+  auto
+  setLevel(LogLevel nemlevel) -> void
+  {
+    this->level = nemlevel;
+  };
+
+  auto
+  setFormatLog(std::function<std::string(std::string, LogLevel)> newFormat)
+    -> void
+  {
+    this->formatLog = std::move(newFormat);
+  }
+
+  auto
+  debug(const std::string &message) -> void
+  {
+    if (this->level > LogLevel::DEBUG)
+    {
+      return;
+    }
+    oStream << this->formatLog(message, LogLevel::DEBUG) << "\n";
+  }
+
+  auto
+  info(const std::string &message) -> void
+  {
+    if (this->level > LogLevel::INFO)
+    {
+      return;
+    }
+    oStream << this->formatLog(message, LogLevel::INFO) << "\n";
+  }
+  auto
+  warn(const std::string &message) -> void
+  {
+    if (this->level > LogLevel::WARN)
+    {
+      return;
+    }
+    oStream << this->formatLog(message, LogLevel::WARN) << "\n";
+  }
+  auto
+  error(const std::string &message) -> void
+  {
+    if (this->level > LogLevel::ERROR)
+    {
+      return;
+    }
+    oStream << this->formatLog(message, LogLevel::ERROR) << "\n";
+  }
+  auto
+  panic(const std::string &message) -> void
+  {
+    oStream << this->formatLog(message, LogLevel::PANIC) << "\n";
+  }
 
 private:
   // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
@@ -75,69 +127,6 @@ public:
   }
 };
 
-// NOLINTBEGIN(misc-definitions-in-headers)
-auto
-Nlogger::setOutStream(std::ostream &out) -> void
-{
-  oStream.rdbuf(out.rdbuf());
-}
-
-auto
-Nlogger::setLevel(LogLevel nemlevel) -> void
-{
-  this->level = nemlevel;
-};
-
-auto
-Nlogger::setFormatLog(
-  std::function<std::string(std::string, LogLevel)> newFormat) -> void
-{
-  this->formatLog = std::move(newFormat);
-}
-
-auto
-Nlogger::debug(const std::string &message) -> void
-{
-  if (this->level > LogLevel::DEBUG)
-  {
-    return;
-  }
-  oStream << this->formatLog(message, LogLevel::DEBUG) << "\n";
-}
-
-auto
-Nlogger::info(const std::string &message) -> void
-{
-  if (this->level > LogLevel::INFO)
-  {
-    return;
-  }
-  oStream << this->formatLog(message, LogLevel::INFO) << "\n";
-}
-auto
-Nlogger::warn(const std::string &message) -> void
-{
-  if (this->level > LogLevel::WARN)
-  {
-    return;
-  }
-  oStream << this->formatLog(message, LogLevel::WARN) << "\n";
-}
-auto
-Nlogger::error(const std::string &message) -> void
-{
-  if (this->level > LogLevel::ERROR)
-  {
-    return;
-  }
-  oStream << this->formatLog(message, LogLevel::ERROR) << "\n";
-}
-auto
-Nlogger::panic(const std::string &message) -> void
-{
-  oStream << this->formatLog(message, LogLevel::PANIC) << "\n";
-}
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wswitch-default"
 auto
@@ -159,7 +148,6 @@ levelToString(LogLevel logLevel) -> std::string
   throw std::runtime_error("Unknown log level");
 };
 #pragma GCC diagnostic pop
-// NOLINTEND(misc-definitions-in-headers)
 };
 #endif // !NLOGGER_HPP
 // This file is part of nlogger.
