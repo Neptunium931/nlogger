@@ -111,6 +111,7 @@ private:
   Nlogger logger;
 
 public:
+  Snlogger(const Snlogger &) = delete;
   auto operator=(const Snlogger &) = delete;
 
   static auto
