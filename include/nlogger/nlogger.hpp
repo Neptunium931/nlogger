@@ -23,7 +23,7 @@ static auto levelToString(LogLevel logLevel) -> std::string;
 class Nlogger
 {
 public:
-  Nlogger(std::ostream &out = std::cout)
+  Nlogger(std::ostream &out = std::cerr)
     : oStream(out) {};
 
   auto
